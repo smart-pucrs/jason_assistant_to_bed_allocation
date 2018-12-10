@@ -1,0 +1,11 @@
+mas assistant {
+
+    agent assistant_agent {
+		focus: simulator
+	}
+    
+    workspace assistantart{
+    	artifact simulator:env.AssistantArtifact()
+    }
+    
+}
