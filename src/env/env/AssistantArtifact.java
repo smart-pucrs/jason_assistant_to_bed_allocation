@@ -22,7 +22,7 @@ public class AssistantArtifact extends Artifact {
 		readJson();
 	}
 	
-	public synchronized static String execCommand(final String commandLine) throws IOException {
+	public synchronized String execCommand(final String commandLine) throws IOException {
 		boolean success = false;
 		String result;
 		Process p;
@@ -46,7 +46,7 @@ public class AssistantArtifact extends Artifact {
 		} catch (IOException e) {
 			result = String.format("Falha ao executar comando %s. Erro: %s", commandLine, e.toString());
 		}
-		// Se n„o executou com sucesso, lanÁa a falha
+		// Se n√£o executou com sucesso, lan√ßa a falha
 		if (!success) {
 			throw new IOException(result);
 		}
@@ -59,7 +59,8 @@ public class AssistantArtifact extends Artifact {
 		String path = currentDir.getAbsolutePath();		
 		try {			
 			Object obj = parser.parse(new FileReader(path+"//files//generate.json"));
-			
+			System.out.printf("****** FileReader: "+ path+"//files//generate.json");
+
 			JSONObject jsonObject 		= (JSONObject) obj;			
 			JSONObject objFacilities 	= (JSONObject) jsonObject.get("facilities");
 			JSONObject objWells 		= (JSONObject) objFacilities.get("wells");
@@ -70,7 +71,18 @@ public class AssistantArtifact extends Artifact {
 			defineObsProperty("conf_efficiencyIncreaseMax", objWells.get("efficiencyIncreaseMax"));
 			defineObsProperty("conf_baseIntegrityMin", objWells.get("baseIntegrityMin"));
 			defineObsProperty("conf_baseIntegrityMax", objWells.get("baseIntegrityMax"));
-			defineObsProperty("conf_costFactor", objWells.get("costFactor"));			
+			defineObsProperty("conf_costFactor", objWells.get("costFactor"));
+
+			StringBuilder relatorio = new StringBuilder();
+			StringBuilder problema = new StringBuilder();
+			StringBuilder plano = new StringBuilder();
+			relatorio.append(path + "//files//relatorio" + "problem1");
+			problema.append(path + "//files//problem1.pddl");
+			plano.append(path + "//files//problem1_plan.pddl");
+			
+			defineObsProperty("relatorio", relatorio.toString());
+			defineObsProperty("problema", problema.toString());
+			defineObsProperty("plano", plano.toString());
 			
 		} catch (Exception e) {
 				e.printStackTrace();
@@ -79,8 +91,21 @@ public class AssistantArtifact extends Artifact {
 	
 	@OPERATION
 	void registrar(String nome) {
-		System.out.printf("****** agente "+ nome+" Registrado no artefato ****** \n");
+		System.out.printf("****** agente "+ nome +" Registrado no artefato ****** \n");
 	}
 	
+	@OPERATION
+	void rodarValidador(String relatorio, String problema, String plano) throws IOException {
+		File currentDir = new File(".");
+		String path = currentDir.getAbsolutePath();		
+		StringBuilder comando = new StringBuilder();
+		StringBuilder validador = new StringBuilder();
+		StringBuilder dominio = new StringBuilder();
+		validador.append(path + "//validador//VAL-master/validate");
+		dominio.append(path + "//files//hospital.pddl");
+		comando.append(validador + " -l -f " + relatorio + " -v " + dominio + " " + problema + " " + plano);
+		this.execCommand(comando.toString());
+		System.out.printf("****** comando: "+ validador + " -l -f " + relatorio + " -v " + dominio + " " + problema + " " + plano);
+	}
 
 }
