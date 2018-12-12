@@ -11,9 +11,15 @@
 +runValidator
 	: true
 <-
-	runValidator
+	!validarPlano
 	.
 
++retornovalidador(Ret)
+	: true
+<-
+	.print("================ Retorno do Validador: ", Ret);
+	.
+	
 +!start 
 	: true 
 <- 
@@ -34,6 +40,8 @@
 <-
 	.print("### Validar: Problema: ", Problema, " Plano: ", Plano, " Relatorio: ", Relatorio);
 	rodarValidador(Relatorio, Problema, Plano);
+	.print("### ler relatório");
+	readLatex(Relatorio);
 	.
 
 //+!validarPlano
