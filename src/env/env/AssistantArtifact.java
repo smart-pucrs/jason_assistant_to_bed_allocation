@@ -13,15 +13,14 @@ import org.json.simple.parser.JSONParser;
 import cartago.*;
 
 public class AssistantArtifact extends Artifact {
-	
 
 	private static Logger logger = Logger.getLogger(AssistantArtifact.class.getName());
-	
-	void init(){
+
+	void init() {
 		logger.info("Assistant Artifact has been created!");
 		readJson();
 	}
-	
+
 	public synchronized String execCommand(final String commandLine) throws IOException {
 		boolean success = false;
 		String result;
@@ -52,19 +51,19 @@ public class AssistantArtifact extends Artifact {
 		}
 		return result;
 	}
-	
-	public void readJson(){		
-		JSONParser parser = new JSONParser();		
-		File currentDir = new File(".");
-		String path = currentDir.getAbsolutePath();		
-		try {			
-			Object obj = parser.parse(new FileReader(path+"//files//generate.json"));
-			System.out.printf("****** FileReader: "+ path+"//files//generate.json");
 
-			JSONObject jsonObject 		= (JSONObject) obj;			
-			JSONObject objFacilities 	= (JSONObject) jsonObject.get("facilities");
-			JSONObject objWells 		= (JSONObject) objFacilities.get("wells");
-						
+	public void readJson() {
+		JSONParser parser = new JSONParser();
+		File currentDir = new File(".");
+		String path = currentDir.getAbsolutePath();
+		try {
+			Object obj = parser.parse(new FileReader(path + "//files//generate.json"));
+			System.out.printf("****** FileReader: " + path + "//files//generate.json");
+
+			JSONObject jsonObject = (JSONObject) obj;
+			JSONObject objFacilities = (JSONObject) jsonObject.get("facilities");
+			JSONObject objWells = (JSONObject) objFacilities.get("wells");
+
 			defineObsProperty("conf_baseEfficiencyMin", objWells.get("baseEfficiencyMin"));
 			defineObsProperty("conf_baseEfficiencyMax", objWells.get("baseEfficiencyMax"));
 			defineObsProperty("conf_efficiencyIncreaseMin", objWells.get("efficiencyIncreaseMin"));
@@ -79,62 +78,68 @@ public class AssistantArtifact extends Artifact {
 			relatorio.append(path + "//files//relatorio" + "problem1");
 			problema.append(path + "//files//problem1.pddl");
 			plano.append(path + "//files//problem1_plan.pddl");
-			
+
 			defineObsProperty("relatorio", relatorio.toString());
 			defineObsProperty("problema", problema.toString());
 			defineObsProperty("plano", plano.toString());
-			
+
 		} catch (Exception e) {
-				e.printStackTrace();
+			e.printStackTrace();
 		}
 	}
-	
+
 	@OPERATION
 	public void readLatex(String relatorio) {
 		try {
-		      FileReader arq = new FileReader(relatorio+".tex");
-		      BufferedReader lerArq = new BufferedReader(arq);
-		      String retorno = "";
-		      String linha = lerArq.readLine(); // lê a primeira linha
-		// a variável "linha" recebe o valor "null" quando o processo
-		// de repetição atingir o final do arquivo texto
-		      String successful = "{Successful Plans}";
-		      String failed = "{Failed Plans}";
-		      String preconditionFailed = "has an unsatisfied precondition";
-		      while (linha != null) {
-		        System.out.printf("%s\n", linha);
-		 
-		        linha = lerArq.readLine(); // lê da segunda até a última linha
-		       
-		        if(linha.contains(successful)) {		        	
-		        	retorno = "Plano valido";
-		        }
-		        if(linha.contains(failed)) {		        	
-		        	retorno = "Plano falhou";
-		        }
-		        if(linha.contains(preconditionFailed)) {		        	
-		        	defineObsProperty("unsatisfiedPrecondition", linha);		        	
-		        }
-		      }
-		 
-		      arq.close();
-		      System.out.printf("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ %s\n", retorno);
-		      defineObsProperty("retornovalidador", "plano valido");
-		    } catch (IOException e) {
-		        System.err.printf("Erro na abertura do arquivo: %s.\n",
-		          e.getMessage());
-		    }		 
+			FileReader arq = new FileReader(relatorio + ".tex");
+			BufferedReader lerArq = new BufferedReader(arq);
+			String retorno = "";
+			String linha = lerArq.readLine(); // lê a primeira linha
+			// a variável "linha" recebe o valor "null" quando o processo
+			// de repetição atingir o final do arquivo texto
+
+			StringBuilder texto = new StringBuilder();
+			texto.append(linha);
+
+			String successful = "{Successful Plans}";
+			String failed = "{Failed Plans}";
+			String preconditionFailed = "has an unsatisfied precondition";
+
+			while (linha != null) {
+//		        System.out.printf("%s\n", linha);
+
+				linha = lerArq.readLine(); // lê da segunda até a última linha
+				texto.append("\n");
+				texto.append(linha);
+			}
+			arq.close();
+
+			if (texto.toString().contains(successful)) {
+				retorno = "Plano valido";
+			}
+			if (texto.toString().contains(failed)) {
+				retorno = "Plano falhou";
+			}
+//		      if(texto.contains(preconditionFailed)) {		        	
+//		        	defineObsProperty("unsatisfiedPrecondition", linha);		        	
+//		        }
+//		      System.out.printf("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ %s\n", retorno);
+			System.out.printf("%s\n", texto);
+			defineObsProperty("retornovalidador", retorno);
+		} catch (IOException e) {
+			System.err.printf("Erro na abertura do arquivo: %s.\n", e.getMessage());
+		}
 	}
-	
+
 	@OPERATION
 	void registrar(String nome) {
-		System.out.printf("****** agente "+ nome +" Registrado no artefato ****** \n");
+		System.out.printf("****** agente " + nome + " Registrado no artefato ****** \n");
 	}
-	
+
 	@OPERATION
 	void rodarValidador(String relatorio, String problema, String plano) throws IOException {
 		File currentDir = new File(".");
-		String path = currentDir.getAbsolutePath();		
+		String path = currentDir.getAbsolutePath();
 		StringBuilder comando = new StringBuilder();
 		StringBuilder validador = new StringBuilder();
 		StringBuilder dominio = new StringBuilder();
@@ -142,7 +147,8 @@ public class AssistantArtifact extends Artifact {
 		dominio.append(path + "//files//hospital.pddl");
 		comando.append(validador + " -l -f " + relatorio + " -v " + dominio + " " + problema + " " + plano);
 		this.execCommand(comando.toString());
-		System.out.printf("****** comando: "+ validador + " -l -f " + relatorio + " -v " + dominio + " " + problema + " " + plano);
+		System.out.printf("****** comando: " + validador + " -l -f " + relatorio + " -v " + dominio + " " + problema
+				+ " " + plano);
 	}
 
 }

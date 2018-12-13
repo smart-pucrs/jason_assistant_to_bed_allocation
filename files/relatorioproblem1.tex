@@ -68,7 +68,7 @@ Plan size: 15
 \atime{0.011} \> \listrow{\action{(allocateucl pacienteucladulto camaucladulto adulto) [0]}}\\
 \atime{0.012} \> \listrow{\action{(allocateucl pacienteuclcrianca camauclcrianca crianca) [0]}}\\
 \atime{0.013} \> \listrow{\action{(allocateisolation pacienteisolamento camaisolamento) [0]}}\\
-\atime{0.014} \> \listrow{\action{(allocateuti pacienteuti) [0]}}\\
+\atime{0.014} \> \listrow{\action{(allocateuti pacienteisolamento) [0]}}\\
 \end{tabbing}
 \subsection{Plan To Validate}
 \begin{tabbing}
@@ -80,7 +80,7 @@ Plan size: 15
 \\\atime{0.008}  \> \listrow{\action{(allocatepsiquiatria pacientepsiquiatriamasculino camapsiquiatriamasculino masculino)}}\\ \> \listrow{\action{(allocateavc pacienteavcfeminino camaavcfeminino feminino)}}\\
 \\\atime{0.01}  \> \listrow{\action{(allocateavc pacienteavcmasculino camaavcmasculino masculino)}}\\ \> \listrow{\action{(allocateucl pacienteucladulto camaucladulto adulto)}}\\
 \\\atime{0.012}  \> \listrow{\action{(allocateucl pacienteuclcrianca camauclcrianca crianca)}}\\ \> \listrow{\action{(allocateisolation pacienteisolamento camaisolamento)}}\\
-\\\atime{0.014}  \> \listrow{\action{(allocateuti pacienteuti)}}\\
+\\\atime{0.014}  \> \listrow{\action{(allocateuti pacienteisolamento)}}\\
 \end{tabbing}
 
 \subsection{Plan Validation}
@@ -158,11 +158,19 @@ Plan size: 15
  \> \adding{(busybed camaisolamento)}\\
  \> \adding{(bedisolation camaisolamento)}\\
 \\
-\atime{0.014} \> \checkhappening\happeningOK\\
- \> \adding{(donotallocate pacienteuti)}\\
+\atime{0.014} \> \checkhappening \notOK \\
+ \> Plan failed because of unsatisfied precondition in:\\
+ \> \action{(allocateuti pacienteisolamento)}\\
 \end{tabbing}
-Plan executed successfully - checking goal\\
-\\
+
+Plan failed to execute
+\subsection{Plan Repair Advice}
+\begin{enumerate}
+\item \action{(allocateuti pacienteisolamento)} has an unsatisfied precondition at time 0.014\\
+Follow each of:
+\begin{itemize}\item Set \exprn{(allocated pacienteisolamento)} to false
+\item Set \exprn{(patientuti pacienteisolamento)} to true
+\end{itemize}\end{enumerate}
 \subsection{Gantt Chart}
 {\bf Gantt Chart Key}\\
 Row 1
@@ -175,7 +183,7 @@ Row 1
 9 \> 0.008 \> \listrowg{\action{(allocatepsiquiatria pacientepsiquiatriamasculino camapsiquiatriamasculino masculino)}} \\
 11 \> 0.01 \> \listrowg{\action{(allocateavc pacienteavcmasculino camaavcmasculino masculino)}} \\
 13 \> 0.012 \> \listrowg{\action{(allocateucl pacienteuclcrianca camauclcrianca crianca)}} \\
-15 \> 0.014 \> \listrowg{\action{(allocateuti pacienteuti)}} \\
+15 \> 0.014 \> \listrowg{\action{(allocateuti pacienteisolamento)}} \\
 \end{tabbing}
 Row 2
 \begin{tabbing}
@@ -266,11 +274,7 @@ Row 2
 \put(4.6,2.6){\rotcaption{Gantt Chart}} \end{picture} 
 \end{center} \end{figure} 
 %%-----------------------------------------------------------
-\section{Successful Plans}
-\begin{tabbing}
-{\bf Value} \qquad \= {\bf Plan}\\[0.8ex]
-15 \>\begin{minipage}[t]{12cm} /\-home/\-debo/\-git/\-jason\_assistant/\-./\-/\-files/\-/\-problem1\_plan.pddl 15  \end{minipage}\\
- \>\\
-\end{tabbing}
+\section{Failed Plans}
+\begin{minipage}[t]{13cm} /\-home/\-debo/\-git/\-jason\_assistant/\-./\-/\-files/\-/\-problem1\_plan.pddl \end{minipage}
 
 \end{document}
