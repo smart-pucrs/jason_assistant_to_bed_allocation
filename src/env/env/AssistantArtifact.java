@@ -3,8 +3,11 @@ package env;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 import org.json.simple.JSONObject;
@@ -75,9 +78,9 @@ public class AssistantArtifact extends Artifact {
 			StringBuilder relatorio = new StringBuilder();
 			StringBuilder problema = new StringBuilder();
 			StringBuilder plano = new StringBuilder();
-			relatorio.append(path + "//files//relatorio" + "problem1");
+			relatorio.append(path + "//files//relatorio" + "problem1_plan7");
 			problema.append(path + "//files//problem1.pddl");
-			plano.append(path + "//files//problem1_plan.pddl");
+			plano.append(path + "//files//problem1_plan7.pddl");
 
 			defineObsProperty("relatorio", relatorio.toString());
 			defineObsProperty("problema", problema.toString());
@@ -87,7 +90,7 @@ public class AssistantArtifact extends Artifact {
 			e.printStackTrace();
 		}
 	}
-
+	
 	@OPERATION
 	public void readLatex(String relatorio) {
 		try {
@@ -103,11 +106,11 @@ public class AssistantArtifact extends Artifact {
 
 			String successful = "{Successful Plans}";
 			String failed = "{Failed Plans}";
-			String preconditionFailed = "has an unsatisfied precondition";
+			String erro = "";
+			String tipo = "";
+			List<String> arrayErros = new ArrayList<String>();
 
 			while (linha != null) {
-//		        System.out.printf("%s\n", linha);
-
 				linha = lerArq.readLine(); // lê da segunda até a última linha
 				texto.append("\n");
 				texto.append(linha);
@@ -115,17 +118,41 @@ public class AssistantArtifact extends Artifact {
 			arq.close();
 
 			if (texto.toString().contains(successful)) {
-				retorno = "Plano valido";
+				retorno = "success";
 			}
 			if (texto.toString().contains(failed)) {
-				retorno = "Plano falhou";
+				retorno = "fail";
+				if(texto.toString().contains("Plan failed to execute")) {
+					tipo = "execution";
+					System.out.printf("Falha na execução do plano\n\n\n\n\n\n\n");
+					if(texto.toString().contains("> Plan failed because of unsatisfied precondition in:\\")) {
+						erro = texto.toString().substring(texto.indexOf("> Plan failed because of unsatisfied precondition in:\\"), texto.indexOf("Plan failed to execute"));
+						erro = erro.substring(erro.indexOf("{(")+1, erro.indexOf(")}")+1);	
+					}
+					arrayErros.add(erro);					
+				}
+				if(texto.toString().contains("Goal not satisfied")) {
+					tipo = "goal";
+					System.out.printf("Objetivo não satisfeito\n\n\n\n\n\n");
+					if(texto.toString().contains("subsection{Plan Repair Advice}")) {
+						erro = texto.toString().substring(texto.indexOf("subsection{Plan Repair Advice}"), texto.indexOf("subsection{Gantt Chart}"));
+						if(texto.toString().contains("begin{itemize}")) {
+							erro = erro.substring(erro.indexOf("begin{itemize}")+14, erro.indexOf("end{itemize}"));
+							String arrayErrosGoals[] = erro.split("item Set");
+							for (int i = 1; i < arrayErrosGoals.length; i++) {
+								System.out.printf("%s\n", arrayErrosGoals[i]);								
+								arrayErros.add(arrayErrosGoals[i].substring(arrayErrosGoals[i].indexOf("{(")+1, arrayErrosGoals[i].indexOf(")}")+1));
+							}							
+						} else {
+							erro = erro.substring(erro.indexOf("begin{enumerate}"), erro.indexOf("end{enumerate}"));
+							erro = erro.substring(erro.indexOf("{(")+1, erro.indexOf(")}")+1);
+						}						
+					}
+				}				
+				defineObsProperty("erro", arrayErros);				
 			}
-//		      if(texto.contains(preconditionFailed)) {		        	
-//		        	defineObsProperty("unsatisfiedPrecondition", linha);		        	
-//		        }
-//		      System.out.printf("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ %s\n", retorno);
-			System.out.printf("%s\n", texto);
 			defineObsProperty("retornovalidador", retorno);
+			defineObsProperty("tipo", tipo);
 		} catch (IOException e) {
 			System.err.printf("Erro na abertura do arquivo: %s.\n", e.getMessage());
 		}
@@ -149,6 +176,36 @@ public class AssistantArtifact extends Artifact {
 		this.execCommand(comando.toString());
 		System.out.printf("****** comando: " + validador + " -l -f " + relatorio + " -v " + dominio + " " + problema
 				+ " " + plano);
+	}
+	
+	@OPERATION
+	void retornoChatbot(String resultado, String tipo, List<String> erro, String retorno) {
+		File currentDir = new File(".");
+		String path = currentDir.getAbsolutePath();
+		
+		//Cria um Objeto JSON
+        JSONObject jsonObject = new JSONObject();
+         
+        FileWriter writeFile = null;
+         
+        //Armazena dados em um Objeto JSON
+        jsonObject.put("resultado", resultado);
+        jsonObject.put("tipo", tipo);
+        jsonObject.put("erro", erro);
+        jsonObject.put("retorno", retorno);
+         
+        try{
+            writeFile = new FileWriter(path + "//files//saida.json");
+            //Escreve no arquivo conteudo do Objeto JSON
+            writeFile.write(jsonObject.toJSONString());
+            writeFile.close();
+        }
+        catch(IOException e){
+            e.printStackTrace();
+        }
+         
+        //Imprimne na Tela o Objeto JSON para vizualização
+        System.out.println(jsonObject);
 	}
 
 }

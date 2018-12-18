@@ -15,9 +15,19 @@
 	.
 
 +retornovalidador(Ret)
-	: true
+	: (Ret == "fail") & erro(Erro) & tipo(Tipo)
 <-
-	.print("================ Retorno do Validador: ", Ret);
+	.print("================ Retorno do Validador: Há falhas no plano \n Erro: ", Erro);
+	retornoChatbot(Ret,Tipo,Erro,"O seu plano de alocação de leitos possui falhas.");	
+	.
+	
++retornovalidador(Ret)
+	: (Ret == "success")
+<-
+	.print("================ Retorno do Validador: Plano válido");
+	retornoChatbot(Ret,"","","O seu plano de alocação de leitos não possui nenhuma falha.");
+	
+
 	.
 	
 +!start 
