@@ -78,9 +78,9 @@ public class AssistantArtifact extends Artifact {
 			StringBuilder relatorio = new StringBuilder();
 			StringBuilder problema = new StringBuilder();
 			StringBuilder plano = new StringBuilder();
-			relatorio.append(path + "//files//relatorio" + "problem1_plan7");
-			problema.append(path + "//files//problem1.pddl");
-			plano.append(path + "//files//problem1_plan7.pddl");
+			relatorio.append(path + "//files//relatorio");
+			problema.append(path + "//files//fileProblema.pddl");
+			plano.append(path + "//files//filePlano.pddl");
 
 			defineObsProperty("relatorio", relatorio.toString());
 			defineObsProperty("problema", problema.toString());
@@ -140,7 +140,7 @@ public class AssistantArtifact extends Artifact {
 							erro = erro.substring(erro.indexOf("begin{itemize}")+14, erro.indexOf("end{itemize}"));
 							String arrayErrosGoals[] = erro.split("item Set");
 							for (int i = 1; i < arrayErrosGoals.length; i++) {
-								System.out.printf("%s\n", arrayErrosGoals[i]);								
+								System.out.printf("%s\n", arrayErrosGoals[i]);
 								arrayErros.add(arrayErrosGoals[i].substring(arrayErrosGoals[i].indexOf("{(")+1, arrayErrosGoals[i].indexOf(")}")+1));
 							}							
 						} else {
@@ -149,8 +149,8 @@ public class AssistantArtifact extends Artifact {
 						}						
 					}
 				}				
-				defineObsProperty("erro", arrayErros);				
 			}
+			defineObsProperty("erro", arrayErros);
 			defineObsProperty("retornovalidador", retorno);
 			defineObsProperty("tipo", tipo);
 		} catch (IOException e) {
@@ -206,6 +206,7 @@ public class AssistantArtifact extends Artifact {
          
         //Imprimne na Tela o Objeto JSON para vizualização
         System.out.println(jsonObject);
+        System.exit(0);
 	}
 
 }

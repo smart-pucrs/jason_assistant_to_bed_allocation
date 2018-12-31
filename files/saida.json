@@ -1,1 +1,1 @@
-{"tipo":"goal","retorno":"O seu plano de alocação de leitos possui falhas.","resultado":"fail","erro":["(allocated pacientepsiquiatriamasculino)","(allocated pacientecirurgiabariatricafeminino)"]}
+{"tipo":"","retorno":"O seu plano de alocação de leitos não possui nenhuma falha.","resultado":"success","erro":[]}
