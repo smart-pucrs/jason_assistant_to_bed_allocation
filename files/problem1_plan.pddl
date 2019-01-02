@@ -1,6 +1,3 @@
-; --Plan #00001--------------------------
-; -- Discretisation: 0.100----------------
-; ---------------------------------------
 0.000: ( allocateobstetricia pacienteobstetriciaaborto camaobstetriciaaborto aborto)
 0.001: ( allocate PacienteGeralMinimoLongaPermanencia camaGeralMinimoLongaPermanencia geral longapermanencia clinico eletivo masculino adulto minimo)
 0.002: ( allocate PacienteGeralIntensivoGiroRapido camaGeralIntensivoGiroRapido geral girorapido clinico eletivo masculino adulto intensivo)
@@ -15,8 +12,4 @@
 0.011: ( allocateucl pacienteucladulto camaucladulto adulto)
 0.012: ( allocateucl pacienteuclcrianca camauclcrianca crianca)
 0.013: ( allocateisolation pacienteisolamento camaisolamento)
-0.014: ( allocateuti pacienteuti)
-; ---------------------------------------
-; --Plan duration: 0.014, weight: 0000----
-; ---------------------------------------
-
+0.014: ( allocateuti paciente2uti1)

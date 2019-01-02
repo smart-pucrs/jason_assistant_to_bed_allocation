@@ -43,8 +43,6 @@
     (patientcirurgiabariatrica ?p - patient)
     (bedginecologia ?varbed - bed)
     (patientginecologia ?p - patient)
-    (bedmedicinainterna ?varbed - bed)
-    (patientmedicinainterna ?p - patient)
   )
 
   (:functions (agefunc ?p - patient))

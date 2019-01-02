@@ -1,7 +1,7 @@
 (define (problem hospital-problem)
   (:domain hospitaldomain)
   (:objects 
-    pacienteUti - patient
+    paciente2uti1 - patient
     ;Isolamento
     pacienteIsolamento - patient
     camaIsolamento - bed
@@ -79,7 +79,7 @@
 
   )
   (:init
-    (patientuti pacienteUti)
+    (patientuti paciente2uti1)
     ;Isolamento
     (bedfree camaIsolamento)
     (patientisolation pacienteIsolamento)
@@ -182,7 +182,7 @@
     (bedcare camaGeralIntensivoGiroRapido intensivo)
   
   )
-  (:goal (and (donotallocate pacienteUti) ;UTI
+  (:goal (and (donotallocate paciente2uti1) ;UTI
               (allocated pacienteIsolamento) ;Isolamento
               (allocated PacienteObstetriciaAborto) ;Obstetricia
               ;(allocated PacienteObstetriciaNascimento)

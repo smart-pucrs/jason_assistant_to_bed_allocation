@@ -1,1 +1,1 @@
-{"tipo":"","retorno":"O seu plano de alocação de leitos não possui nenhuma falha.","resultado":"success","erro":[]}
+{"tipo":"execution","retorno":"O seu plano de alocação de leitos possui falhas.","resultado":"fail","erro":["(allocate awhupxbb5dayp2fc4335f agzk0isibxcoi2qeb60w6 medicinainterna girorapido clinico eletivo masculino adulto minimos)"]}

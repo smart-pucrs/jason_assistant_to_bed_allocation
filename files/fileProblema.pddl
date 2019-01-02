@@ -1,203 +1,116 @@
 (define (problem hospital-problem)
-  (:domain hospitaldomain)
-  (:objects 
-    pacienteUti - patient
-    ;Isolamento
-    pacienteIsolamento - patient
-    camaIsolamento - bed
-    ;Obstetricia
-    PacienteObstetriciaAborto - patient
-    PacienteObstetriciaNascimento - patient
-    CamaObstetriciaAborto - bed
-    CamaObstetriciaNascimento - bed
-    ;UCL
-    PacienteUCLAdulto - patient
-    PacienteUCLCrianca - patient
-    CamaUCLAdulto - bed
-    CamaUCLCrianca - bed
-    ;AVC
-    PacienteAVCFeminino - patient
-    PacienteAVCMasculino - patient
-    CamaAVCFeminino - bed
-    CamaAVCMasculino - bed
-    ;Psiquiatria
-    PacientePsiquiatriaFeminino - patient
-    PacientePsiquiatriaMasculino - patient
-    CamaPsiquiatriaFeminino - bed
-    CamaPsiquiatriaMasculino - bed
-    ;Cirurgia Bariátrica
-    PacienteCirurgiaBariatricaFeminino - patient
-    PacienteCirurgiaBariatricaMasculino - patient
-    CamaCirurgiaBariatricaFeminino - bed
-    CamaCirurgiaBariatricaMasculino - bed
-    ;Ginecologia
-    PacienteGinecologiaClinico - patient
-    PacienteGinecologiaCirurgico - patient
-    CamaGinecologiaClinico - bed
-    CamaGinecologiaCirurgico - bed
-    ;Geral
-    PacienteGeralMinimoLongaPermanencia - patient
-    PacienteGeralIntensivoGiroRapido - patient
-    camaGeralMinimoLongaPermanencia - bed
-    camaGeralIntensivoGiroRapido - bed
-    
-    ;variacoes possiveis
-    minimo - care
-    intensivo - care
-    semiintensivo - care
-    geral - specialty
-    cardiologia - specialty
-    cirurgiabariatrica - specialty
-    cirurgiacardiaca - specialty
-    uclunidadedecuidadosespeciais - specialty
-    cirurgiadigestiva - specialty
-    cirurgiavascular - specialty
-    endovascular - specialty
-    gastro - specialty
-    ginecologia - specialty
-    infecto - specialty
-    medicinainterna - specialty
-    neurologia - specialty
-    obstetricia - specialty
-    oncologia - specialty
-    pneumo - specialty
-    psiquiatria - specialty
-    uti - specialty
-    aborto - birthtype
-    nascimento - birthtype
-    crianca - age
-    adulto - age
-    adolescente - age
-    masculino - gender
-    feminino - gender
-    eletivo - origin
-    agudo - origin
-    clinico - roomtype
-    cirurgico - roomtype
-    longapermanencia - stay
-    girorapido - stay
-
-  )
-  (:init
-    (patientuti pacienteUti)
-    ;Isolamento
-    (bedfree camaIsolamento)
-    (patientisolation pacienteIsolamento)
-    ;Obstetricia
-    (bedfree CamaObstetriciaAborto)
-    (bedfree CamaObstetriciaNascimento)
-    (patientobstetricia PacienteObstetriciaAborto)
-    (patientobstetricia PacienteObstetriciaNascimento)
-    (bedobstetricia CamaObstetriciaAborto)
-    (bedobstetricia CamaObstetriciaNascimento)
-    (bedbirthtype CamaObstetriciaAborto aborto)
-    (bedbirthtype CamaObstetriciaNascimento nascimento)
-    (patientbirthtype PacienteObstetriciaAborto aborto)
-    (patientbirthtype PacienteObstetriciaNascimento nascimento)
-    ;UCL
-    (bedfree CamaUCLAdulto)
-    (bedfree CamaUCLCrianca)
-    (patientucl PacienteUCLAdulto)
-    (patientucl PacienteUCLCrianca)
-    (beducl CamaUCLAdulto)
-    (beducl CamaUCLCrianca)
-    (patientage PacienteUCLAdulto adulto)
-    (patientage PacienteUCLCrianca crianca)
-    (bedage CamaUCLAdulto adulto)
-    (bedage CamaUCLCrianca crianca)
-    ;AVC
-    (bedfree CamaAVCFeminino)
-    (bedfree CamaAVCMasculino)
-    (patientavc PacienteAVCFeminino)
-    (patientavc PacienteAVCMasculino)
-    (bedavc CamaAVCFeminino)
-    (bedavc CamaAVCMasculino)
-    (patientgender PacienteAVCFeminino feminino)
-    (patientgender PacienteAVCMasculino masculino)
-    (bedgender CamaAVCFeminino feminino)
-    (bedgender CamaAVCMasculino masculino)
-    ;Psiquiatria
-    (bedfree CamaPsiquiatriaFeminino)
-    (bedfree CamaPsiquiatriaMasculino)
-    (patientpsiquiatria PacientePsiquiatriaFeminino)
-    (patientpsiquiatria PacientePsiquiatriaMasculino)
-    (bedpsiquiatria CamaPsiquiatriaFeminino)
-    (bedpsiquiatria CamaPsiquiatriaMasculino)
-    (patientgender PacientePsiquiatriaFeminino feminino)
-    (patientgender PacientePsiquiatriaMasculino masculino)
-    (bedgender CamaPsiquiatriaFeminino feminino)
-    (bedgender CamaPsiquiatriaMasculino masculino)
-    ;CirurgiaBariatrica
-    (bedfree CamaCirurgiaBariatricaFeminino)
-    (bedfree CamaCirurgiaBariatricaMasculino)
-    (patientcirurgiabariatrica PacienteCirurgiaBariatricaFeminino)
-    (patientcirurgiabariatrica PacienteCirurgiaBariatricaMasculino)
-    (bedcirurgiabariatrica CamaCirurgiaBariatricaFeminino)
-    (bedcirurgiabariatrica CamaCirurgiaBariatricaMasculino)
-    (patientgender PacienteCirurgiaBariatricaFeminino feminino)
-    (patientgender PacienteCirurgiaBariatricaMasculino masculino)
-    (bedgender CamaCirurgiaBariatricaFeminino feminino)
-    (bedgender CamaCirurgiaBariatricaMasculino masculino)
-    ;Ginecologia
-    (bedfree CamaGinecologiaClinico) 
-    (bedfree CamaGinecologiaCirurgico) 
-    (patientginecologia PacienteGinecologiaClinico)
-    (patientginecologia PacienteGinecologiaCirurgico)
-    (bedginecologia CamaGinecologiaClinico)
-    (bedginecologia CamaGinecologiaCirurgico)
-    (patientroomtype PacienteGinecologiaClinico clinico)
-    (patientroomtype PacienteGinecologiaCirurgico cirurgico)
-    (bedroomtype CamaGinecologiaClinico clinico)
-    (bedroomtype CamaGinecologiaCirurgico cirurgico)
-    ;Geral
-    (bedfree camaGeralMinimoLongaPermanencia) 
-    (bedfree camaGeralIntensivoGiroRapido) 
-    (patientspecialty PacienteGeralMinimoLongaPermanencia geral) 
-    (patientspecialty PacienteGeralIntensivoGiroRapido geral) 
-    (patientstay PacienteGeralMinimoLongaPermanencia longapermanencia)
-    (patientstay PacienteGeralIntensivoGiroRapido girorapido)
-    (patientroomtype PacienteGeralMinimoLongaPermanencia clinico)
-    (patientroomtype PacienteGeralIntensivoGiroRapido clinico)
-    (patientorigin PacienteGeralMinimoLongaPermanencia eletivo)
-    (patientorigin PacienteGeralIntensivoGiroRapido eletivo)
-    (patientgender PacienteGeralMinimoLongaPermanencia masculino)
-    (patientgender PacienteGeralIntensivoGiroRapido masculino)
-    (patientage PacienteGeralMinimoLongaPermanencia adulto)
-    (patientage PacienteGeralIntensivoGiroRapido adulto)
-    (patientcare PacienteGeralMinimoLongaPermanencia minimo)
-    (patientcare PacienteGeralIntensivoGiroRapido intensivo)
-    (bedspecialty camaGeralMinimoLongaPermanencia geral)
-    (bedspecialty camaGeralIntensivoGiroRapido geral)
-    (bedstay camaGeralMinimoLongaPermanencia longapermanencia)
-    (bedstay camaGeralIntensivoGiroRapido girorapido)
-    (bedroomtype camaGeralMinimoLongaPermanencia clinico)
-    (bedroomtype camaGeralIntensivoGiroRapido clinico)
-    (bedorigin camaGeralMinimoLongaPermanencia eletivo)
-    (bedorigin camaGeralIntensivoGiroRapido eletivo)
-    (bedgender camaGeralMinimoLongaPermanencia masculino)
-    (bedgender camaGeralIntensivoGiroRapido masculino)
-    (bedage camaGeralMinimoLongaPermanencia adulto)
-    (bedage camaGeralIntensivoGiroRapido adulto)
-    (bedcare camaGeralMinimoLongaPermanencia minimo)
-    (bedcare camaGeralIntensivoGiroRapido intensivo)
-  
-  )
-  (:goal (and (donotallocate pacienteUti) ;UTI
-              (allocated pacienteIsolamento) ;Isolamento
-              (allocated PacienteObstetriciaAborto) ;Obstetricia
-              ;(allocated PacienteObstetriciaNascimento)
-              (allocated PacienteUCLAdulto) ;UCL
-              (allocated PacienteUCLCrianca)
-              (allocated PacienteAVCFeminino) ;AVC
-              (allocated PacienteAVCMasculino)
-              (allocated PacientePsiquiatriaFeminino) ;Psiquiatria
-              (allocated PacientePsiquiatriaMasculino)
-              (allocated PacienteCirurgiaBariatricaFeminino) ;Cirurgia Bariátrica
-              (allocated PacienteCirurgiaBariatricaMasculino)
-              (allocated PacienteGinecologiaClinico) ;Ginecologia
-              (allocated PacienteGinecologiaCirurgico)
-              (allocated PacienteGeralMinimoLongaPermanencia) ;Geral
-              (allocated PacienteGeralIntensivoGiroRapido)              
-         )
-  )
-)
+      (:domain hospitaldomain)
+      (:objects
+        
+        ;variacoes possiveis
+        minimos - care
+        intensivos - care
+        semiintensivos - care
+        geral - specialty
+        cardiologia - specialty
+        cirurgiabariatrica - specialty
+        cirurgiacardiaca - specialty
+        uclunidadedecuidadosespeciais - specialty
+        cirurgiadigestiva - specialty
+        cirurgiavascular - specialty
+        endovascular - specialty
+        gastro - specialty
+        ginecologia - specialty
+        infecto - specialty
+        medicinainterna - specialty
+        neurologia - specialty
+        obstetricia - specialty
+        oncologia - specialty
+        pneumo - specialty
+        psiquiatria - specialty
+        uti - specialty
+        aborto - birthtype
+        nascimento - birthtype
+        crianca - age
+        adulto - age
+        adolescente - age
+        masculino - gender
+        feminino - gender
+        eletivo - origin
+        agudo - origin
+        clinico - roomtype
+        cirurgico - roomtype
+        longapermanencia - stay
+        girorapido - stay
+        
+        
+        aJM1I2fdsTaMAyNURdQV1 - patient 
+          aF782ck1AdruJpZdi2ySD - bed 
+        aVpMd32mbbg0RFFCi3vhP - patient 
+          aCA34wn7zCD54iYJkvnzd - bed 
+        awhUpxbb5dAyp2FC4335f - patient 
+          agzK0isIbXCOI2QeB60W6 - bed 
+        )
+        (:init 
+           
+            (patientmedicinainterna aJM1I2fdsTaMAyNURdQV1)
+             (patientspecialty aJM1I2fdsTaMAyNURdQV1 medicinainterna)
+             (patientage aJM1I2fdsTaMAyNURdQV1 adulto)
+             (patientgender aJM1I2fdsTaMAyNURdQV1 masculino)
+             (patientcare aJM1I2fdsTaMAyNURdQV1 semiintensivos)
+             (patientorigin aJM1I2fdsTaMAyNURdQV1 eletivo)
+             (patientroomtype aJM1I2fdsTaMAyNURdQV1 cirurgico)
+             (patientstay aJM1I2fdsTaMAyNURdQV1 girorapido)
+             
+            (patientmedicinainterna aVpMd32mbbg0RFFCi3vhP)
+             (patientspecialty aVpMd32mbbg0RFFCi3vhP medicinainterna)
+             (patientage aVpMd32mbbg0RFFCi3vhP adulto)
+             (patientgender aVpMd32mbbg0RFFCi3vhP feminino)
+             (patientcare aVpMd32mbbg0RFFCi3vhP intensivos)
+             (patientorigin aVpMd32mbbg0RFFCi3vhP agudo)
+             (patientroomtype aVpMd32mbbg0RFFCi3vhP clinico)
+             (patientstay aVpMd32mbbg0RFFCi3vhP longapermanencia)
+             
+            (patientmedicinainterna awhUpxbb5dAyp2FC4335f)
+             (patientspecialty awhUpxbb5dAyp2FC4335f medicinainterna)
+             (patientage awhUpxbb5dAyp2FC4335f adulto)
+             (patientgender awhUpxbb5dAyp2FC4335f masculino)
+             (patientcare awhUpxbb5dAyp2FC4335f minimos)
+             (patientorigin awhUpxbb5dAyp2FC4335f eletivo)
+             (patientroomtype awhUpxbb5dAyp2FC4335f clinico)
+             (patientstay awhUpxbb5dAyp2FC4335f girorapido)
+            
+           
+          (bedfree aF782ck1AdruJpZdi2ySD)
+          (bedmedicinainterna aF782ck1AdruJpZdi2ySD)
+          (bedspecialty aF782ck1AdruJpZdi2ySD medicinainterna)
+          (bedage aF782ck1AdruJpZdi2ySD adulto)
+          (bedgender aF782ck1AdruJpZdi2ySD masculino)
+          (bedcare aF782ck1AdruJpZdi2ySD semiintensivos)
+          (bedorigin aF782ck1AdruJpZdi2ySD eletivo)
+          (bedroomtype aF782ck1AdruJpZdi2ySD cirurgico)
+          (bedstay aF782ck1AdruJpZdi2ySD girorapido)
+           
+          (bedfree aCA34wn7zCD54iYJkvnzd)
+          (bedmedicinainterna aCA34wn7zCD54iYJkvnzd)
+          (bedspecialty aCA34wn7zCD54iYJkvnzd medicinainterna)
+          (bedage aCA34wn7zCD54iYJkvnzd adulto)
+          (bedgender aCA34wn7zCD54iYJkvnzd feminino)
+          (bedcare aCA34wn7zCD54iYJkvnzd intensivos)
+          (bedorigin aCA34wn7zCD54iYJkvnzd agudo)
+          (bedroomtype aCA34wn7zCD54iYJkvnzd clinico)
+          (bedstay aCA34wn7zCD54iYJkvnzd longapermanencia)
+           
+          (bedfree agzK0isIbXCOI2QeB60W6)
+          (bedmedicinainterna agzK0isIbXCOI2QeB60W6)
+          (bedspecialty agzK0isIbXCOI2QeB60W6 medicinainterna)
+          (bedage agzK0isIbXCOI2QeB60W6 adulto)
+          (bedgender agzK0isIbXCOI2QeB60W6 masculino)
+          (bedcare agzK0isIbXCOI2QeB60W6 semiintensivos)
+          (bedorigin agzK0isIbXCOI2QeB60W6 eletivo)
+          (bedroomtype agzK0isIbXCOI2QeB60W6 cirurgico)
+          (bedstay agzK0isIbXCOI2QeB60W6 girorapido)
+          
+        )
+        (:goal (and  (allocated aJM1I2fdsTaMAyNURdQV1)
+           (allocated aVpMd32mbbg0RFFCi3vhP)
+           (allocated awhUpxbb5dAyp2FC4335f)
+          
+               )
+        )
+      )

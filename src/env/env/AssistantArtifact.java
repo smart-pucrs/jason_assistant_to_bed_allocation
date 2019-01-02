@@ -120,9 +120,9 @@ public class AssistantArtifact extends Artifact {
 			if (texto.toString().contains(successful)) {
 				retorno = "success";
 			}
-			if (texto.toString().contains(failed)) {
-				retorno = "fail";
+			if (texto.toString().contains(failed)) {				
 				if(texto.toString().contains("Plan failed to execute")) {
+					retorno = "fail";
 					tipo = "execution";
 					System.out.printf("Falha na execução do plano\n\n\n\n\n\n\n");
 					if(texto.toString().contains("> Plan failed because of unsatisfied precondition in:\\")) {
@@ -132,6 +132,7 @@ public class AssistantArtifact extends Artifact {
 					arrayErros.add(erro);					
 				}
 				if(texto.toString().contains("Goal not satisfied")) {
+					retorno = "failGoal";
 					tipo = "goal";
 					System.out.printf("Objetivo não satisfeito\n\n\n\n\n\n");
 					if(texto.toString().contains("subsection{Plan Repair Advice}")) {
@@ -140,12 +141,14 @@ public class AssistantArtifact extends Artifact {
 							erro = erro.substring(erro.indexOf("begin{itemize}")+14, erro.indexOf("end{itemize}"));
 							String arrayErrosGoals[] = erro.split("item Set");
 							for (int i = 1; i < arrayErrosGoals.length; i++) {
-								System.out.printf("%s\n", arrayErrosGoals[i]);
+								System.out.printf("arrayErrosGoals [%i] %s\n", i, arrayErrosGoals[i]);
 								arrayErros.add(arrayErrosGoals[i].substring(arrayErrosGoals[i].indexOf("{(")+1, arrayErrosGoals[i].indexOf(")}")+1));
 							}							
 						} else {
 							erro = erro.substring(erro.indexOf("begin{enumerate}"), erro.indexOf("end{enumerate}"));
 							erro = erro.substring(erro.indexOf("{(")+1, erro.indexOf(")}")+1);
+							arrayErros.add(erro);
+							System.out.printf("%% erro %s\n", erro);
 						}						
 					}
 				}				
