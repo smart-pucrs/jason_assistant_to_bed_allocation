@@ -42,9 +42,9 @@
         aJM1I2fdsTaMAyNURdQV1 - patient 
           aF782ck1AdruJpZdi2ySD - bed 
         aVpMd32mbbg0RFFCi3vhP - patient 
-          aCA34wn7zCD54iYJkvnzd - bed 
+          a42Mm17y5WBLFCZRen0xk - bed 
         awhUpxbb5dAyp2FC4335f - patient 
-          agzK0isIbXCOI2QeB60W6 - bed 
+          aFk9jyUCA8GNDUWjO7fTP - bed 
         )
         (:init 
            
@@ -86,25 +86,25 @@
           (bedroomtype aF782ck1AdruJpZdi2ySD cirurgico)
           (bedstay aF782ck1AdruJpZdi2ySD girorapido)
            
-          (bedfree aCA34wn7zCD54iYJkvnzd)
-          (bedmedicinainterna aCA34wn7zCD54iYJkvnzd)
-          (bedspecialty aCA34wn7zCD54iYJkvnzd medicinainterna)
-          (bedage aCA34wn7zCD54iYJkvnzd adulto)
-          (bedgender aCA34wn7zCD54iYJkvnzd feminino)
-          (bedcare aCA34wn7zCD54iYJkvnzd intensivos)
-          (bedorigin aCA34wn7zCD54iYJkvnzd agudo)
-          (bedroomtype aCA34wn7zCD54iYJkvnzd clinico)
-          (bedstay aCA34wn7zCD54iYJkvnzd longapermanencia)
+          (bedfree a42Mm17y5WBLFCZRen0xk)
+          (bedmedicinainterna a42Mm17y5WBLFCZRen0xk)
+          (bedspecialty a42Mm17y5WBLFCZRen0xk medicinainterna)
+          (bedage a42Mm17y5WBLFCZRen0xk adulto)
+          (bedgender a42Mm17y5WBLFCZRen0xk feminino)
+          (bedcare a42Mm17y5WBLFCZRen0xk intensivos)
+          (bedorigin a42Mm17y5WBLFCZRen0xk agudo)
+          (bedroomtype a42Mm17y5WBLFCZRen0xk clinico)
+          (bedstay a42Mm17y5WBLFCZRen0xk longapermanencia)
            
-          (bedfree agzK0isIbXCOI2QeB60W6)
-          (bedmedicinainterna agzK0isIbXCOI2QeB60W6)
-          (bedspecialty agzK0isIbXCOI2QeB60W6 medicinainterna)
-          (bedage agzK0isIbXCOI2QeB60W6 adulto)
-          (bedgender agzK0isIbXCOI2QeB60W6 masculino)
-          (bedcare agzK0isIbXCOI2QeB60W6 semiintensivos)
-          (bedorigin agzK0isIbXCOI2QeB60W6 eletivo)
-          (bedroomtype agzK0isIbXCOI2QeB60W6 cirurgico)
-          (bedstay agzK0isIbXCOI2QeB60W6 girorapido)
+          (bedfree aFk9jyUCA8GNDUWjO7fTP)
+          (bedmedicinainterna aFk9jyUCA8GNDUWjO7fTP)
+          (bedspecialty aFk9jyUCA8GNDUWjO7fTP medicinainterna)
+          (bedage aFk9jyUCA8GNDUWjO7fTP adulto)
+          (bedgender aFk9jyUCA8GNDUWjO7fTP masculino)
+          (bedcare aFk9jyUCA8GNDUWjO7fTP minimos)
+          (bedorigin aFk9jyUCA8GNDUWjO7fTP eletivo)
+          (bedroomtype aFk9jyUCA8GNDUWjO7fTP clinico)
+          (bedstay aFk9jyUCA8GNDUWjO7fTP girorapido)
           
         )
         (:goal (and  (allocated aJM1I2fdsTaMAyNURdQV1)

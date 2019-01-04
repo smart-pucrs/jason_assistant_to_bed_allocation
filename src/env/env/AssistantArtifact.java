@@ -107,8 +107,9 @@ public class AssistantArtifact extends Artifact {
 			String successful = "{Successful Plans}";
 			String failed = "{Failed Plans}";
 			String erro = "";
+			String reparo = "";
 			String tipo = "";
-			List<String> arrayErros = new ArrayList<String>();
+			List<String> arrayReparos = new ArrayList<String>();
 
 			while (linha != null) {
 				linha = lerArq.readLine(); // lê da segunda até a última linha
@@ -126,34 +127,60 @@ public class AssistantArtifact extends Artifact {
 					tipo = "execution";
 					System.out.printf("Falha na execução do plano\n\n\n\n\n\n\n");
 					if(texto.toString().contains("> Plan failed because of unsatisfied precondition in:\\")) {
+						System.out.printf("contains(\"> Plan failed because of unsatisfied precondition\n\n");
 						erro = texto.toString().substring(texto.indexOf("> Plan failed because of unsatisfied precondition in:\\"), texto.indexOf("Plan failed to execute"));
-						erro = erro.substring(erro.indexOf("{(")+1, erro.indexOf(")}")+1);	
+						System.out.printf("Erro: %s\n\n", erro);
+						erro = erro.substring(erro.indexOf("{(")+1, erro.indexOf(")}")+1);
+						System.out.printf("Erro Final: %s\n\n", erro);
 					}
-					arrayErros.add(erro);					
+					if(texto.toString().contains("subsection{Plan Repair Advice}")) {
+						System.out.printf("contains(subsection{Plan Repair Advice}\n\n");
+						reparo = texto.toString().substring(texto.indexOf("subsection{Plan Repair Advice}"), texto.indexOf("subsection{Gantt Chart}"));
+						System.out.printf("reparo: %s\n\n", reparo);
+						if(texto.toString().contains("begin{itemize}")) {
+							System.out.printf("contains(begin{itemize}\n\n");
+							reparo = reparo.substring(reparo.indexOf("begin{itemize}")+14, reparo.indexOf("end{itemize}"));
+							System.out.printf("reparo: %s\n\n", reparo);
+							String arrayErrosGoals[] = reparo.split("item Set");
+							System.out.printf("Passou do split\n\n");
+							for (int i = 1; i < arrayErrosGoals.length; i++) {
+								System.out.printf("arrayErrosGoals %s\n", arrayErrosGoals[i]);
+								arrayReparos.add(arrayErrosGoals[i].substring(arrayErrosGoals[i].indexOf("{(")+1, arrayErrosGoals[i].indexOf(")}")+1));
+							}
+						} else {
+							System.out.printf("Not contains(begin{itemize}\n\n");
+							reparo = reparo.substring(reparo.indexOf("begin{enumerate}"), reparo.indexOf("end{enumerate}"));
+							System.out.printf("reparo: %s\n\n", reparo);
+							reparo = reparo.substring(reparo.indexOf("{(")+1, reparo.indexOf(")}")+1);
+							arrayReparos.add(reparo);
+							System.out.printf("%% reparo %s\n", reparo);
+						}						
+					}
 				}
 				if(texto.toString().contains("Goal not satisfied")) {
 					retorno = "failGoal";
 					tipo = "goal";
 					System.out.printf("Objetivo não satisfeito\n\n\n\n\n\n");
 					if(texto.toString().contains("subsection{Plan Repair Advice}")) {
-						erro = texto.toString().substring(texto.indexOf("subsection{Plan Repair Advice}"), texto.indexOf("subsection{Gantt Chart}"));
+						reparo = texto.toString().substring(texto.indexOf("subsection{Plan Repair Advice}"), texto.indexOf("subsection{Gantt Chart}"));
 						if(texto.toString().contains("begin{itemize}")) {
-							erro = erro.substring(erro.indexOf("begin{itemize}")+14, erro.indexOf("end{itemize}"));
-							String arrayErrosGoals[] = erro.split("item Set");
+							reparo = reparo.substring(reparo.indexOf("begin{itemize}")+14, reparo.indexOf("end{itemize}"));
+							String arrayErrosGoals[] = reparo.split("item Set");
 							for (int i = 1; i < arrayErrosGoals.length; i++) {
-								System.out.printf("arrayErrosGoals [%i] %s\n", i, arrayErrosGoals[i]);
-								arrayErros.add(arrayErrosGoals[i].substring(arrayErrosGoals[i].indexOf("{(")+1, arrayErrosGoals[i].indexOf(")}")+1));
-							}							
+								System.out.printf("arrayErrosGoals %s\n", arrayErrosGoals[i]);
+								arrayReparos.add(arrayErrosGoals[i].substring(arrayErrosGoals[i].indexOf("{(")+1, arrayErrosGoals[i].indexOf(")}")+1));
+							}
 						} else {
-							erro = erro.substring(erro.indexOf("begin{enumerate}"), erro.indexOf("end{enumerate}"));
-							erro = erro.substring(erro.indexOf("{(")+1, erro.indexOf(")}")+1);
-							arrayErros.add(erro);
-							System.out.printf("%% erro %s\n", erro);
+							reparo = reparo.substring(reparo.indexOf("begin{enumerate}"), reparo.indexOf("end{enumerate}"));
+							reparo = reparo.substring(reparo.indexOf("{(")+1, reparo.indexOf(")}")+1);
+							arrayReparos.add(reparo);
+							System.out.printf("%% reparo %s\n", reparo);
 						}						
 					}
 				}				
 			}
-			defineObsProperty("erro", arrayErros);
+			defineObsProperty("erro", erro);
+			defineObsProperty("reparo", arrayReparos);
 			defineObsProperty("retornovalidador", retorno);
 			defineObsProperty("tipo", tipo);
 		} catch (IOException e) {
@@ -182,10 +209,14 @@ public class AssistantArtifact extends Artifact {
 	}
 	
 	@OPERATION
-	void retornoChatbot(String resultado, String tipo, List<String> erro, String retorno) {
+	void retornoChatbot(String resultado, String tipo, String erro, String retorno,  List<String> reparo) {
 		File currentDir = new File(".");
 		String path = currentDir.getAbsolutePath();
-		
+		System.out.printf("resultado: %s\n", resultado);
+		System.out.printf("tipo: %s\n", tipo);
+		System.out.printf("erro: %s\n", erro);
+		System.out.printf("retorno: %s\n", retorno);
+		System.out.printf("reparo: %s\n", reparo);
 		//Cria um Objeto JSON
         JSONObject jsonObject = new JSONObject();
          
@@ -196,6 +227,7 @@ public class AssistantArtifact extends Artifact {
         jsonObject.put("tipo", tipo);
         jsonObject.put("erro", erro);
         jsonObject.put("retorno", retorno);
+        jsonObject.put("reparo", reparo);
          
         try{
             writeFile = new FileWriter(path + "//files//saida.json");

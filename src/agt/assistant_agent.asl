@@ -15,24 +15,24 @@
 	.
 
 +retornovalidador(Ret)
-	: (Ret == "fail") & erro(Erro) & tipo(Tipo)
+	: (Ret == "fail") & erro(Erro) & tipo(Tipo) & reparo(Reparo)
 <-
 	.print("================ Retorno do Validador: Há falhas no plano \n Erro: ", Erro);
-	retornoChatbot(Ret,Tipo,Erro,"O seu plano de alocação de leitos possui falhas.");
+	retornoChatbot(Ret,Tipo,Erro,"O seu plano de alocação de leitos possui falhas.", Reparo);
 	.
 	
 +retornovalidador(Ret)
-	: (Ret == "failGoal") & erro(Erro) & tipo(Tipo)
+	: (Ret == "failGoal") & erro(Erro) & tipo(Tipo) & reparo(Reparo)
 <-
 	.print("================ Retorno do Validador: Há falhas no plano \n Erro: ", Erro);
-	retornoChatbot(Ret,Tipo,Erro,"O seu plano de alocação de leitos é válido mas não atende a todos os objetivos.");
+	retornoChatbot(Ret,Tipo,Erro,"O seu plano de alocação de leitos é válido mas não atende a todos os objetivos.", Reparo);
 	.
 	
 +retornovalidador(Ret)
-	: (Ret == "success") & erro(Erro)
+	: (Ret == "success") & reparo(Reparo)
 <-
 	.print("================ Retorno do Validador: Plano válido");
-	retornoChatbot(Ret,"",Erro,"O seu plano de alocação de leitos não possui nenhuma falha.");
+	retornoChatbot(Ret,"","","O seu plano de alocação de leitos não possui nenhuma falha.", Reparo);
 	.
 	
 +!start 

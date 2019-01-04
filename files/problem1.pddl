@@ -79,7 +79,7 @@
 
   )
   (:init
-    (patientuti paciente2uti1)
+    (patientuti pacienteuti)
     ;Isolamento
     (bedfree camaIsolamento)
     (patientisolation pacienteIsolamento)
@@ -182,7 +182,7 @@
     (bedcare camaGeralIntensivoGiroRapido intensivo)
   
   )
-  (:goal (and (donotallocate paciente2uti1) ;UTI
+  (:goal (and (donotallocate pacienteuti) ;UTI
               (allocated pacienteIsolamento) ;Isolamento
               (allocated PacienteObstetriciaAborto) ;Obstetricia
               ;(allocated PacienteObstetriciaNascimento)
