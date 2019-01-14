@@ -54,51 +54,45 @@
 Plan size: 3
 \begin{tabbing}
 \headingtimeaction 
-\atime{0} \> \listrow{\action{(allocate ajm1i2fdstamaynurdqv1 af782ck1adrujpzdi2ysd medicinainterna girorapido cirurgico eletivo masculino adulto semiintensivos)}}\\
-\atime{0.001} \> \listrow{\action{(allocate avpmd32mbbg0rffci3vhp a42mm17y5wblfczren0xk medicinainterna longapermanencia clinico agudo feminino adulto intensivos)}}\\
-\atime{0.002} \> \listrow{\action{(allocate awhupxbb5dayp2fc4335f afk9jyuca8gnduwjo7ftp medicinainterna girorapido clinico eletivo masculino adulto minimos)}}\\
+\atime{0} \> \listrow{\action{(allocate a9p3dadzjkri7lip3ndf1 afk9jyuca8gnduwjo7ftp medicinainterna girorapido clinico eletivo masculino adulto intensivos)}}\\
+\atime{0.001} \> \listrow{\action{(allocate ajm1i2fdstamaynurdqv1 a3cxyyl1dcgde9micuylv oncologia girorapido clinico eletivo masculino adulto minimos)}}\\
+\atime{0.002} \> \listrow{\action{(allocate acl1tc3yef9fnjotjnrvm a4itcsdq7kkxexyt48by6 cardiologia longapermanencia clinico eletivo feminino adulto semiintensivos)}}\\
 \end{tabbing}
 \subsection{Plan To Validate}
 \begin{tabbing}
 \headingtimehappening 
-\atime{0}  \> \listrow{\action{(allocate ajm1i2fdstamaynurdqv1 af782ck1adrujpzdi2ysd medicinainterna girorapido cirurgico eletivo masculino adulto semiintensivos)}}\\ \> \listrow{\action{(allocate avpmd32mbbg0rffci3vhp a42mm17y5wblfczren0xk medicinainterna longapermanencia clinico agudo feminino adulto intensivos)}}\\
-\\\atime{0.002}  \> \listrow{\action{(allocate awhupxbb5dayp2fc4335f afk9jyuca8gnduwjo7ftp medicinainterna girorapido clinico eletivo masculino adulto minimos)}}\\
+\atime{0}  \> \listrow{\action{(allocate a9p3dadzjkri7lip3ndf1 afk9jyuca8gnduwjo7ftp medicinainterna girorapido clinico eletivo masculino adulto intensivos)}}\\ \> \listrow{\action{(allocate ajm1i2fdstamaynurdqv1 a3cxyyl1dcgde9micuylv oncologia girorapido clinico eletivo masculino adulto minimos)}}\\
+\\\atime{0.002}  \> \listrow{\action{(allocate acl1tc3yef9fnjotjnrvm a4itcsdq7kkxexyt48by6 cardiologia longapermanencia clinico eletivo feminino adulto semiintensivos)}}\\
 \end{tabbing}
 
 \subsection{Plan Validation}
 \begin{tabbing}
 \headingtimedetails 
 \\
-\atime{0} \> \checkhappening\happeningOK\\
- \> \deleting{(bedfree af782ck1adrujpzdi2ysd)}\\
- \> \deleting{(bedfree a42mm17y5wblfczren0xk)}\\
- \> \adding{(in ajm1i2fdstamaynurdqv1 af782ck1adrujpzdi2ysd)}\\
- \> \adding{(allocated ajm1i2fdstamaynurdqv1)}\\
- \> \adding{(busybed af782ck1adrujpzdi2ysd)}\\
- \> \adding{(in avpmd32mbbg0rffci3vhp a42mm17y5wblfczren0xk)}\\
- \> \adding{(allocated avpmd32mbbg0rffci3vhp)}\\
- \> \adding{(busybed a42mm17y5wblfczren0xk)}\\
+\atime{0} \> \checkhappening \notOK \\
+ \> Plan failed because of unsatisfied precondition in:\\
+ \> \action{(allocate a9p3dadzjkri7lip3ndf1 afk9jyuca8gnduwjo7ftp medicinainterna girorapido clinico eletivo masculino adulto intensivos)}\\
 \\
-\atime{0.002} \> \checkhappening\happeningOK\\
- \> \deleting{(bedfree afk9jyuca8gnduwjo7ftp)}\\
- \> \adding{(in awhupxbb5dayp2fc4335f afk9jyuca8gnduwjo7ftp)}\\
- \> \adding{(allocated awhupxbb5dayp2fc4335f)}\\
- \> \adding{(busybed afk9jyuca8gnduwjo7ftp)}\\
 \end{tabbing}
-Plan executed successfully - checking goal\\
-\\
+
+Plan failed to execute
+\subsection{Plan Repair Advice}
+\begin{enumerate}
+\item \action{(allocate a9p3dadzjkri7lip3ndf1 afk9jyuca8gnduwjo7ftp medicinainterna girorapido clinico eletivo masculino adulto intensivos)} has an unsatisfied precondition at time 0\\
+Set \exprn{(bedcare afk9jyuca8gnduwjo7ftp intensivos)} to true
+\end{enumerate}
 \subsection{Gantt Chart}
 {\bf Gantt Chart Key}\\
 Row 1
 \begin{tabbing}
 {\bf No} \qquad \= {\bf Time} \qquad \= {\bf Action} \\
-1 \> 0 \> \listrowg{\action{(allocate ajm1i2fdstamaynurdqv1 af782ck1adrujpzdi2ysd medicinainterna girorapido cirurgico eletivo masculino adulto semiintensivos)}} \\
-3 \> 0.002 \> \listrowg{\action{(allocate awhupxbb5dayp2fc4335f afk9jyuca8gnduwjo7ftp medicinainterna girorapido clinico eletivo masculino adulto minimos)}} \\
+1 \> 0 \> \listrowg{\action{(allocate a9p3dadzjkri7lip3ndf1 afk9jyuca8gnduwjo7ftp medicinainterna girorapido clinico eletivo masculino adulto intensivos)}} \\
+3 \> 0.002 \> \listrowg{\action{(allocate acl1tc3yef9fnjotjnrvm a4itcsdq7kkxexyt48by6 cardiologia longapermanencia clinico eletivo feminino adulto semiintensivos)}} \\
 \end{tabbing}
 Row 2
 \begin{tabbing}
 {\bf No} \qquad \= {\bf Time} \qquad \= {\bf Action} \\
-2 \> 0 \> \listrowg{\action{(allocate avpmd32mbbg0rffci3vhp a42mm17y5wblfczren0xk medicinainterna longapermanencia clinico agudo feminino adulto intensivos)}} \\
+2 \> 0 \> \listrowg{\action{(allocate ajm1i2fdstamaynurdqv1 a3cxyyl1dcgde9micuylv oncologia girorapido clinico eletivo masculino adulto minimos)}} \\
 \end{tabbing}
 %%---------------------------------------------------------
 \begin{figure} \begin{center} \setlength{\unitlength}{80pt}
@@ -130,11 +124,7 @@ Row 2
 \put(4.6,2.6){\rotcaption{Gantt Chart}} \end{picture} 
 \end{center} \end{figure} 
 %%-----------------------------------------------------------
-\section{Successful Plans}
-\begin{tabbing}
-{\bf Value} \qquad \= {\bf Plan}\\[0.8ex]
-3 \>\begin{minipage}[t]{12cm} /\-home/\-debo/\-git/\-jason\_assistant/\-./\-/\-files/\-/\-filePlano.pddl 3  \end{minipage}\\
- \>\\
-\end{tabbing}
+\section{Failed Plans}
+\begin{minipage}[t]{13cm} /\-home/\-debo/\-git/\-jason\_assistant/\-./\-/\-files/\-/\-filePlano.pddl \end{minipage}
 
 \end{document}

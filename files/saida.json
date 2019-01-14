@@ -1,1 +1,1 @@
-{"tipo":"","retorno":"O seu plano de alocação de leitos não possui nenhuma falha.","resultado":"success","erro":"","reparo":[]}
+{"tipo":"execution","retorno":"O seu plano de alocação de leitos possui falhas.","resultado":"fail","erro":"(allocate a9p3dadzjkri7lip3ndf1 afk9jyuca8gnduwjo7ftp medicinainterna girorapido clinico eletivo masculino adulto intensivos)","reparo":["(bedcare afk9jyuca8gnduwjo7ftp intensivos)"]}

@@ -150,10 +150,12 @@ public class AssistantArtifact extends Artifact {
 						} else {
 							System.out.printf("Not contains(begin{itemize}\n\n");
 							reparo = reparo.substring(reparo.indexOf("begin{enumerate}"), reparo.indexOf("end{enumerate}"));
-							System.out.printf("reparo: %s\n\n", reparo);
+							System.out.printf("reparo1: %s\n\n", reparo);
+							reparo = reparo.substring(reparo.indexOf("Set"), reparo.indexOf("true"));
+							System.out.printf("reparo2: %s\n\n", reparo);
 							reparo = reparo.substring(reparo.indexOf("{(")+1, reparo.indexOf(")}")+1);
 							arrayReparos.add(reparo);
-							System.out.printf("%% reparo %s\n", reparo);
+							System.out.printf("%% reparo3 %s\n", reparo);
 						}						
 					}
 				}
@@ -241,7 +243,7 @@ public class AssistantArtifact extends Artifact {
          
         //Imprimne na Tela o Objeto JSON para vizualização
         System.out.println(jsonObject);
-        System.exit(0);
+//        System.exit(0);
 	}
 
 }
