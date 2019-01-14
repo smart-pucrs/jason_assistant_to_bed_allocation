@@ -243,7 +243,7 @@ public class AssistantArtifact extends Artifact {
          
         //Imprimne na Tela o Objeto JSON para vizualização
         System.out.println(jsonObject);
-//        System.exit(0);
+        System.exit(0);
 	}
 
 }
